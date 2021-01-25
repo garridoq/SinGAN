@@ -41,8 +41,10 @@ if __name__ == '__main__':
             if ref.shape[3] != real.shape[3]:
                 ref = imresize_to_shape(ref, [real.shape[2], real.shape[3]], opt)
                 ref = ref[:, :, :real.shape[2], :real.shape[3]]
+            
 
             N = len(reals[0]) - 1
+            N = opt.stop_scale
             n = opt.harmonization_start_scale
             in_s = imresize(ref, pow(opt.scale_factor, (N - n + 1)), opt)
             in_s = in_s[:, :, :reals[0][n - 1].shape[2], :reals[0][n - 1].shape[3]]

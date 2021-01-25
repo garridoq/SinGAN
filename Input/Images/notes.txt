@@ -1,0 +1,2 @@
+resize to height = 256
+crop 256*256 and place left of selection at pixel 50

@@ -1,5 +1,7 @@
 # Don't track content of these folders
 Output/
 TrainedModels/
+classical_denoising/
+SIFID_denoising/
 __pycache__/
 .idea

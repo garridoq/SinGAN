@@ -21,9 +21,7 @@ import glob
 def read_images_in_dir(opt):
     xs = []
     for filename in glob.glob('%s/%s/*' % (opt.input_dir,opt.input_name)):
-        print(filename)
         x = img.imread(filename)
-        print("Read image", x.shape)
         x = np2torch(x,opt)
         x = x[:,0:3,:,:]
         xs.append(x)
@@ -33,7 +31,6 @@ def read_images_in_dir(opt):
 
 def read_image(opt):
     x = img.imread('%s/%s' % (opt.input_dir,opt.input_name))
-    print("Read image", x.shape)
     x = np2torch(x,opt)
     x = x[:,0:3,:,:]
     return x
@@ -269,13 +266,19 @@ def load_trained_pyramid(opt, mode_='train'):
     return Gs,Zs,reals,NoiseAmp
 
 def generate_in2coarsest(reals,scale_v,scale_h,opt):
-    real = reals[opt.gen_start_scale]
+    real = reals[0][opt.gen_start_scale]
     real_down = upsampling(real, scale_v * real.shape[2], scale_h * real.shape[3])
+    in_ss = []
     if opt.gen_start_scale == 0:
         in_s = torch.full(real_down.shape, 0, device=opt.device)
+        in_ss.append(in_s)
     else: #if n!=0
-        in_s = upsampling(real_down, real_down.shape[2], real_down.shape[3])
-    return in_s
+        for real in reals:
+            real =real[opt.gen_start_scale]
+            real_down = upsampling(real, scale_v * real.shape[2], scale_h * real.shape[3])
+            in_s = upsampling(real_down, real_down.shape[2], real_down.shape[3])
+            in_ss.append(in_s)
+    return in_ss
 
 def generate_dir2save(opt):
     dir2save = None

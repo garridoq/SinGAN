@@ -38,15 +38,20 @@ if __name__ == '__main__':
             real = functions.read_images_in_dir(opt)
             functions.adjust_scales2image(real[0], opt)
             Gs, Zs, reals, NoiseAmp = functions.load_trained_pyramid(opt)
-            in_s = functions.generate_in2coarsest(reals,1,1,opt)
-            SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt, gen_start_scale=opt.gen_start_scale)
+            in_ss = functions.generate_in2coarsest(reals,1,1,opt)
+            for in_s in in_ss:
+                print("Generating an image....")
+                SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt, gen_start_scale=opt.gen_start_scale)
+
 
         elif opt.mode == 'random_samples_arbitrary_sizes':
             real = functions.read_images_in_dir(opt)
             functions.adjust_scales2image(real[0], opt)
             Gs, Zs, reals, NoiseAmp = functions.load_trained_pyramid(opt)
-            in_s = functions.generate_in2coarsest(reals,opt.scale_v,opt.scale_h,opt)
-            SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt, in_s, scale_v=opt.scale_v, scale_h=opt.scale_h)
+            in_ss = functions.generate_in2coarsest(reals,opt.scale_v,opt.scale_h,opt)
+            for in_s in in_ss:
+                print("Generating an image....")
+                SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt, in_s, scale_v=opt.scale_v, scale_h=opt.scale_h)
 
 
 

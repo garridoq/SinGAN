@@ -13,7 +13,12 @@ def train(opt,Gs,Zs,reals,NoiseAmp):
     in_s = 0
     scale_num = 0
     real = [imresize(r,opt.scale1,opt) for r in real_]
-    reals = [functions.creat_reals_pyramid(r,reals,opt) for r in real ]
+    reals = []
+    for r in real:
+        reals_i = []
+        functions.creat_reals_pyramid(r,reals_i,opt)
+        reals.append(reals_i)
+    print(len(reals[0]))
     nfc_prev = 0
 
     while scale_num<opt.stop_scale+1:
